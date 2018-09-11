@@ -65,14 +65,14 @@ public class DispatcherServlet extends HttpServlet {
         Class<?>[] paramTypes = handler.method.getParameterTypes();
         Object[] paramValues = new Object[paramTypes.length];
 
-        Map<String,String[]> params = req.getParameterMap();
-        for (Map.Entry<String,String[]> param : params.entrySet()){
+        Map<String, String[]> params = req.getParameterMap();
+        for (Map.Entry<String, String[]> param : params.entrySet()) {
             String value = Arrays.toString(param.getValue()).replaceAll("\\[|\\]", "");
-            if(!handler.paramIndexMapping.containsKey(param.getKey())){
+            if (!handler.paramIndexMapping.containsKey(param.getKey())) {
                 continue;
             }
             int index = handler.paramIndexMapping.get(param.getKey());
-            paramValues[index] = convert(paramTypes[index],value);
+            paramValues[index] = convert(paramTypes[index], value);
         }
 
         Integer reqIndex = handler.paramIndexMapping.get(HttpServletRequest.class.getName());
@@ -81,7 +81,7 @@ public class DispatcherServlet extends HttpServlet {
         Integer resIndex = handler.paramIndexMapping.get(HttpServletResponse.class.getName());
         paramValues[resIndex] = resp;
 
-        handler.method.invoke(handler.controller,paramValues);
+        handler.method.invoke(handler.controller, paramValues);
     }
 
     @Override
